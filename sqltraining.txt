@@ -1,0 +1,114 @@
+1. 
+-------------------       -------------------       --------------------   
+|    Customers    |       |   Categories    |       |    Employees     |
+-------------------       -------------------       --------------------
+|   CustomerID    |       |   CategoryID    |       |   EmployeeID     |
+|   (Primary Key) |       |  (Primary Key)  |       |  (Primary Key)   |
+|      ...        |       |      ...        |       |       ...         |
+|                 |       |                 |       |                  |
+|       91        |       |        8        |       |        10        |
+-------------------       -------------------       --------------------
+           |                     |                        |
+           |                     |                        |
+           |                     |                        |
+           |                     |                        |
+           -------------         |         ----------------
+                       |         |         |
+                       |         |         |
+                       v         v         v
+                 -------------------       --------------------
+                 |   OrderDetails  |       |      Orders      |
+                 -------------------       --------------------
+                 | OrderDetailID   |       |     OrderID      |
+                 |   ProductID     |       |  (Primary Key)   |
+                 |   Quantity      |       |     ...          |
+                 |      ...        |       |                  |
+                 |                 |       |       196        |
+                 |                 |       --------------------
+                 |                 |
+                 |                 |
+                 |        518      |
+                 +-----------------+
+                           |
+                           |
+                           |
+                           v
+                 -------------------
+                 |     Products    |
+                 -------------------
+                 |    ProductID    |
+                 |  (Primary Key)  |
+                 |      ...        |
+                 |                 |
+                 |       77        |
+                 -------------------
+                           |
+                           |
+                           |
+                           v
+                   -------------------
+                   |    Shippers     |
+                   -------------------
+                   |   ShipperID     |
+                   |  (Primary Key)  |
+                   |      ...        |
+                   |                 |
+                   |       3         |
+                   -------------------
+                           |
+                           |
+                           |
+                           v
+                   -------------------
+                   |    Suppliers    |
+                   -------------------
+                   |   SupplierID    |
+                   |  (Primary Key)  |
+                   |      ...        |
+                   |                 |
+                   |       29        |
+                   -------------------
+
+
+
+
+
+2. SELECT  *
+   FROM ORDERS O
+   JOIN Customers C ON O.CustomerID =C.CustomerID
+   JOIN OrderDetails OD ON O.OrderID=OD.ORDERID
+   JOIN Products P ON OD.ProductID=P.ProductID
+   JOIN Shippers S ON O.ShippersID=S.ShippersID;
+
+
+3. SELECT 
+    P.ProductName,
+    S.ShipperName
+   FROM OrderDetails OD
+   JOIN Products P ON OD.ProductID = P.ProductID
+   JOIN Orders O ON OD.OrderID = O.OrderID
+   JOIN Shippers S ON O.ShipperID = S.ShipperID;
+
+
+
+
+4. SELECT 
+   S.ShipperName,
+   COUNT(*) AS TotalProductsShipped
+   FROM Orders O
+   JOIN Shippers S ON O.ShipperID = S.ShipperID
+   GROUP BY S.ShipperName;
+
+
+
+
+5. SELECT COUNT(*) AS CustomersWithoutSon
+   FROM Customers
+   WHERE CustomerName NOT LIKE '%son%';
+
+
+6. SELECT SUM(OD.Quantity) AS TotalSales
+   FROM Orders O
+   JOIN OrderDetails OD ON O.OrderID = OD.OrderID
+   WHERE YEAR(O.OrderDate) = 1997;
+ 
